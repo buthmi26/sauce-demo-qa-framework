@@ -1,0 +1,149 @@
+{
+  "info": {
+    "name": "QA Portfolio - API Testing (reqres.in)",
+    "description": "API test collection demonstrating GET/POST requests, status code checks, response body validation, and negative testing against the reqres.in test API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET - List Users",
+      "request": {
+        "method": "GET",
+        "url": "https://reqres.in/api/users?page=2"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has data array', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET - Single User (valid)",
+      "request": {
+        "method": "GET",
+        "url": "https://reqres.in/api/users/2"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('User email is present and valid format', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data.email).to.match(/^\\S+@\\S+\\.\\S+$/);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET - Single User (not found)",
+      "request": {
+        "method": "GET",
+        "url": "https://reqres.in/api/users/999"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404 for non-existent user', function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST - Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jane QA\",\n  \"job\": \"QA Intern\"\n}"
+        },
+        "url": "https://reqres.in/api/users"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201 Created', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response contains submitted name and job', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.name).to.eql('Jane QA');",
+              "    pm.expect(jsonData.job).to.eql('QA Intern');",
+              "});",
+              "",
+              "pm.test('Response has an id and createdAt', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "    pm.expect(jsonData).to.have.property('createdAt');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST - Register (missing password - negative test)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"sydney@fife\"\n}"
+        },
+        "url": "https://reqres.in/api/register"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 for missing password', function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Error message is present', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.exist;",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

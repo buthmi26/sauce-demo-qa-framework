@@ -1,0 +1,21 @@
+Test ID,Module,Test Title,Preconditions,Steps,Test Data,Expected Result,Priority,Technique Used
+TC001,Login,Successful login with valid credentials,User on login page,"1. Enter username 2. Enter password 3. Click Login",standard_user / secret_sauce,User is redirected to the products page,High,Equivalence Partitioning (valid class)
+TC002,Login,Login fails with invalid password,User on login page,"1. Enter valid username 2. Enter wrong password 3. Click Login",standard_user / wrongpass,Error message is displayed; user remains on login page,High,Equivalence Partitioning (invalid class)
+TC003,Login,Login fails with invalid username,User on login page,"1. Enter invalid username 2. Enter valid password 3. Click Login",wrong_user / secret_sauce,Error message is displayed,High,Equivalence Partitioning (invalid class)
+TC004,Login,Login fails with empty username,User on login page,"1. Leave username blank 2. Enter password 3. Click Login",blank / secret_sauce,Error message: username is required,Medium,Boundary Value (empty input)
+TC005,Login,Login fails with empty password,User on login page,"1. Enter username 2. Leave password blank 3. Click Login",standard_user / blank,Error message: password is required,Medium,Boundary Value (empty input)
+TC006,Login,Locked out user cannot log in,User on login page,"1. Enter locked_out_user 2. Enter password 3. Click Login",locked_out_user / secret_sauce,Error message indicates user has been locked out,High,Equivalence Partitioning
+TC007,Product Listing,Products page displays all items,User logged in,1. Observe product listing,N/A,All 6 SauceDemo products are visible with name price and image,Medium,Functional
+TC008,Product Listing,Sort products by price low to high,User logged in,"1. Open sort dropdown 2. Select 'Price (low to high)'",N/A,Products are reordered from lowest to highest price,Medium,Functional
+TC009,Product Listing,Sort products by price high to low,User logged in,"1. Open sort dropdown 2. Select 'Price (high to low)'",N/A,Products are reordered from highest to lowest price,Medium,Functional
+TC010,Product Listing,Sort products alphabetically A to Z,User logged in,"1. Open sort dropdown 2. Select 'Name (A to Z)'",N/A,Products are sorted alphabetically ascending,Low,Functional
+TC011,Cart,Add single item to cart,User logged in,1. Click 'Add to cart' on one product,N/A,Cart icon shows count of 1; item appears in cart,High,Functional
+TC012,Cart,Add multiple items to cart,User logged in,1. Click 'Add to cart' on 3 different products,N/A,Cart icon shows count of 3,High,Boundary Value
+TC013,Cart,Remove item from cart,Item already in cart,1. Click 'Remove' on an item in cart page,N/A,Item is removed; cart count decreases by 1,High,Functional
+TC014,Cart,Cart persists after navigating pages,Item already in cart,"1. Add item to cart 2. Navigate to another page 3. Return to cart",N/A,Item remains in cart,Medium,Functional
+TC015,Checkout,Complete checkout with valid info,Item in cart; user on checkout step 1,"1. Enter first name 2. Enter last name 3. Enter zip code 4. Click Continue 5. Click Finish",Test / User / 10100,Order is completed; confirmation message shown,High,Functional
+TC016,Checkout,Checkout fails with missing first name,Item in cart; user on checkout step 1,"1. Leave first name blank 2. Fill other fields 3. Click Continue",blank / User / 10100,Error message: first name is required,Medium,Boundary Value (empty input)
+TC017,Checkout,Checkout fails with missing zip code,Item in cart; user on checkout step 1,"1. Fill name fields 2. Leave zip blank 3. Click Continue",Test / User / blank,Error message: zip code is required,Medium,Boundary Value (empty input)
+TC018,Checkout,Cancel checkout returns to cart,User on checkout step 1,1. Click Cancel,N/A,User is returned to the cart page; cart contents unchanged,Low,Functional
+TC019,Checkout,Order summary shows correct item total,Multiple items in cart; user on checkout step 2,1. Observe order summary,N/A,Item total price and tax match sum of individual item prices,High,Functional
+TC020,Exploratory,General exploratory pass on problem_user,User logs in as problem_user,1. Freely navigate site and note anomalies,problem_user / secret_sauce,Any visual/functional defects are documented as bugs,High,Exploratory Testing
